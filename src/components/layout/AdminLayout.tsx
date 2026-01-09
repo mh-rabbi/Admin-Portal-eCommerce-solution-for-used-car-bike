@@ -14,6 +14,7 @@ import {
   ChevronDown,
   Wallet,
   ShoppingBag,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -51,6 +52,7 @@ const navItems: NavItem[] = [
       { title: "Paid", href: "/payments/paid", icon: Wallet },
     ],
   },
+  { title: "Users", href: "/users", icon: Users },
   { title: "Analytics", href: "/analytics", icon: BarChart3 },
 ];
 

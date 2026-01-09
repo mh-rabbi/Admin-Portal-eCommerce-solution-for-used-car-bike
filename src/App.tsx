@@ -14,6 +14,7 @@ import SoldVehicles from "@/pages/vehicles/SoldVehicles";
 import PendingPayments from "@/pages/payments/PendingPayments";
 import PaidPayments from "@/pages/payments/PaidPayments";
 import Analytics from "@/pages/Analytics";
+import Users from "@/pages/Users";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/vehicles/sold" element={<SoldVehicles />} />
             <Route path="/payments/pending" element={<PendingPayments />} />
             <Route path="/payments/paid" element={<PaidPayments />} />
+            <Route path="/users" element={<Users />} />
             <Route path="/analytics" element={<Analytics />} />
           </Route>
           <Route path="*" element={<NotFound />} />
