@@ -16,7 +16,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { TrendingUp, DollarSign, ShoppingBag, Percent, Loader2 } from "lucide-react";
+import { TrendingUp, Wallet, ShoppingBag, Percent, Loader2 } from "lucide-react";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { analyticsService } from "@/services/analytics.service";
 import { useToast } from "@/hooks/use-toast";
@@ -32,7 +32,7 @@ const chartColors = [
 
 export default function Analytics() {
   const [stats, setStats] = useState([
-    { title: "Total Revenue", value: "$0", icon: DollarSign, trend: { value: 0, isPositive: true } },
+    { title: "Total Revenue", value: "৳0", icon: Wallet, trend: { value: 0, isPositive: true } },
     { title: "Total Sales", value: "0", icon: ShoppingBag, trend: { value: 0, isPositive: true } },
     { title: "Growth Rate", value: "0%", icon: TrendingUp, trend: { value: 0, isPositive: true } },
     { title: "Avg. Margin", value: "0%", icon: Percent, trend: { value: 0, isPositive: true } },
@@ -62,8 +62,8 @@ export default function Analytics() {
       setStats([
         {
           title: "Total Revenue",
-          value: `$${analytics.totalRevenue.toLocaleString()}`,
-          icon: DollarSign,
+          value: `৳${analytics.totalRevenue.toLocaleString()}`,
+          icon: Wallet,
           trend: { value: 15.2, isPositive: true },
         },
         {

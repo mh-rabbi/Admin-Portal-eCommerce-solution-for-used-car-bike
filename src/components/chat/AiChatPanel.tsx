@@ -29,22 +29,22 @@ const getAiResponse = (query: string): string => {
   const lowerQuery = query.toLowerCase();
   
   if (lowerQuery.includes("last week") && lowerQuery.includes("sale")) {
-    return `📊 **Last Week Sales Summary**\n\n• Total Sales: **47 vehicles**\n• Revenue: **$1,247,500**\n• Average Price: **$26,542**\n• Top Category: SUVs (18 units)\n\n📈 This represents a **12% increase** from the previous week!`;
+    return `📊 **Last Week Sales Summary**\n\n• Total Sales: **47 vehicles**\n• Revenue: **৳1,247,500**\n• Average Price: **৳26,542**\n• Top Category: SUVs (18 units)\n\n📈 This represents a **12% increase** from the previous week!`;
   }
   
   if (lowerQuery.includes("monthly") || lowerQuery.includes("month")) {
-    return `📋 **Monthly Report - December 2024**\n\n**Sales Performance:**\n• Vehicles Sold: 186\n• Total Revenue: $4,892,300\n• Avg. Days on Lot: 12\n\n**Inventory Status:**\n• Pending Approval: 23\n• Active Listings: 145\n• Sold This Month: 186\n\n**Top Performers:**\n1. Toyota Camry - 24 units\n2. Honda CR-V - 19 units\n3. Ford F-150 - 17 units`;
+    return `📋 **Monthly Report - December 2024**\n\n**Sales Performance:**\n• Vehicles Sold: 186\n• Total Revenue: ৳4,892,300\n• Avg. Days on Lot: 12\n\n**Inventory Status:**\n• Pending Approval: 23\n• Active Listings: 145\n• Sold This Month: 186\n\n**Top Performers:**\n1. Toyota Camry - 24 units\n2. Honda CR-V - 19 units\n3. Ford F-150 - 17 units`;
   }
   
   if (lowerQuery.includes("top") && lowerQuery.includes("selling")) {
-    return `🏆 **Top Selling Vehicles (This Month)**\n\n1. **Toyota Camry** - 24 units ($576,000)\n2. **Honda CR-V** - 19 units ($608,000)\n3. **Ford F-150** - 17 units ($765,000)\n4. **Tesla Model 3** - 15 units ($675,000)\n5. **BMW X5** - 12 units ($840,000)\n\n💡 SUVs continue to dominate sales this quarter!`;
+    return `🏆 **Top Selling Vehicles (This Month)**\n\n1. **Toyota Camry** - 24 units (৳576,000)\n2. **Honda CR-V** - 19 units (৳608,000)\n3. **Ford F-150** - 17 units (৳765,000)\n4. **Tesla Model 3** - 15 units (৳675,000)\n5. **BMW X5** - 12 units (৳840,000)\n\n💡 SUVs continue to dominate sales this quarter!`;
   }
   
   if (lowerQuery.includes("pending")) {
-    return `⏳ **Pending Items Overview**\n\n**Vehicle Approvals:**\n• New Submissions: 8\n• Under Review: 12\n• Awaiting Documents: 3\n\n**Payment Processing:**\n• Pending Payments: 14\n• Total Amount: $367,800\n\n🔔 Recommend prioritizing the 3 vehicles awaiting documents.`;
+    return `⏳ **Pending Items Overview**\n\n**Vehicle Approvals:**\n• New Submissions: 8\n• Under Review: 12\n• Awaiting Documents: 3\n\n**Payment Processing:**\n• Pending Payments: 14\n• Total Amount: ৳367,800\n\n🔔 Recommend prioritizing the 3 vehicles awaiting documents.`;
   }
   
-  return `I've analyzed your query: "${query}"\n\n📊 Based on current data:\n• Total Active Listings: 145\n• Pending Actions: 23\n• Today's Revenue: $89,500\n\nHow can I help you further? Try asking about:\n- Sales trends\n- Inventory status\n- Payment reports\n- Performance metrics`;
+  return `I've analyzed your query: "${query}"\n\n📊 Based on current data:\n• Total Active Listings: 145\n• Pending Actions: 23\n• Today's Revenue: ৳89,500\n\nHow can I help you further? Try asking about:\n- Sales trends\n- Inventory status\n- Payment reports\n- Performance metrics`;
 };
 
 export function AiChatPanel({ open, onClose }: AiChatPanelProps) {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Clock, Search, CheckCircle, Loader2 } from "lucide-react";
+import { Clock, Search, CheckCircle, Loader2, AlertCircle } from "lucide-react";
 import { paymentsService, Payment } from "@/services/payments.service";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,8 +13,6 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export default function PendingPayments() {
   const [payments, setPayments] = useState<Payment[]>([]);
@@ -45,8 +43,9 @@ export default function PendingPayments() {
   const filteredPayments = payments.filter(
     (p) =>
       p.vehicle?.title?.toLowerCase().includes(search.toLowerCase()) ||
-      p.buyer?.name?.toLowerCase().includes(search.toLowerCase()) ||
-      p.buyer?.email?.toLowerCase().includes(search.toLowerCase())
+      p.vehicle?.seller?.name?.toLowerCase().includes(search.toLowerCase()) ||
+      p.vehicle?.seller?.email?.toLowerCase().includes(search.toLowerCase()) ||
+      p.transactionId?.toLowerCase().includes(search.toLowerCase())
   );
 
   const handleMarkPaid = async (id: number) => {
@@ -66,7 +65,20 @@ export default function PendingPayments() {
     }
   };
 
-  const totalPending = payments.reduce((sum, p) => sum + p.amount, 0);
+  const totalPending = payments.reduce((sum, p) => sum + Number(p.amount), 0);
+  const pendingCount = payments.filter(p => p.status === 'pending').length;
+  const failedCount = payments.filter(p => p.status === 'failed').length;
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'pending':
+        return <Badge variant="outline" className="bg-amber-500/10 text-amber-500">Pending</Badge>;
+      case 'failed':
+        return <Badge variant="outline" className="bg-red-500/10 text-red-500">Failed</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -78,7 +90,7 @@ export default function PendingPayments() {
           <div>
             <h2 className="text-xl font-semibold text-foreground">Pending Payments</h2>
             <p className="text-sm text-muted-foreground">
-              {payments.length} payments · ${totalPending.toLocaleString()} pending
+              {pendingCount} pending · {failedCount} failed · ৳{totalPending.toLocaleString()} total
             </p>
           </div>
         </div>
@@ -98,12 +110,12 @@ export default function PendingPayments() {
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead>Payment ID</TableHead>
+              <TableHead>Transaction ID</TableHead>
               <TableHead>Vehicle</TableHead>
-              <TableHead>Buyer</TableHead>
               <TableHead>Seller</TableHead>
-              <TableHead>Amount</TableHead>
-              <TableHead>Method</TableHead>
+              <TableHead>Vehicle Price</TableHead>
+              <TableHead>Platform Fee</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>Date</TableHead>
               <TableHead className="text-right">Action</TableHead>
             </TableRow>
@@ -134,20 +146,35 @@ export default function PendingPayments() {
                     className="animate-fade-in"
                     style={{ animationDelay: `${index * 50}ms` }}
                   >
-                    <TableCell className="font-mono text-sm">PAY{String(payment.id).padStart(5, '0')}</TableCell>
+                    <TableCell className="font-mono text-sm">
+                      {payment.transactionId || `PAY${String(payment.id).padStart(5, '0')}`}
+                    </TableCell>
                     <TableCell className="font-medium">
-                      {payment.vehicle?.title || `Vehicle #${payment.vehicleId}`}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {payment.buyer?.name || 'Unknown'}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">-</TableCell>
-                    <TableCell className="font-semibold">
-                      ${payment.amount.toLocaleString()}
+                      <div>
+                        <p>{payment.vehicle?.title || `Vehicle #${payment.vehicleId}`}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {payment.vehicle?.type?.toUpperCase()} · {payment.vehicle?.brand}
+                        </p>
+                      </div>
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline">Online</Badge>
+                      <div>
+                        <p>{payment.vehicle?.seller?.name || 'Unknown'}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {payment.vehicle?.seller?.email}
+                        </p>
+                      </div>
                     </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      ৳{Number(payment.vehiclePrice || 0).toLocaleString()}
+                    </TableCell>
+                    <TableCell className="font-semibold">
+                      ৳{Number(payment.amount).toLocaleString()}
+                      <span className="text-xs text-muted-foreground ml-1">
+                        ({payment.feePercentage}%)
+                      </span>
+                    </TableCell>
+                    <TableCell>{getStatusBadge(payment.status)}</TableCell>
                     <TableCell className="text-muted-foreground">{date}</TableCell>
                     <TableCell className="text-right">
                       <Button

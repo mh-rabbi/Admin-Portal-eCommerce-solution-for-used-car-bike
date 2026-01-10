@@ -105,7 +105,7 @@ export function RevenueChart() {
               }}
               labelStyle={{ color: "hsl(var(--foreground))" }}
               formatter={(value: number, name: string) => [
-                name === "revenue" ? `$${value.toLocaleString()}` : value,
+                name === "revenue" ? `৳${value.toLocaleString()}` : value,
                 name === "revenue" ? "Revenue" : "Sales",
               ]}
             />

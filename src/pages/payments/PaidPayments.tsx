@@ -43,11 +43,12 @@ export default function PaidPayments() {
   const filteredPayments = payments.filter(
     (p) =>
       p.vehicle?.title?.toLowerCase().includes(search.toLowerCase()) ||
-      p.buyer?.name?.toLowerCase().includes(search.toLowerCase()) ||
-      p.buyer?.email?.toLowerCase().includes(search.toLowerCase())
+      p.vehicle?.seller?.name?.toLowerCase().includes(search.toLowerCase()) ||
+      p.vehicle?.seller?.email?.toLowerCase().includes(search.toLowerCase()) ||
+      p.transactionId?.toLowerCase().includes(search.toLowerCase())
   );
 
-  const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
+  const totalPaid = payments.reduce((sum, p) => sum + Number(p.amount), 0);
 
   return (
     <div className="space-y-6">
@@ -59,7 +60,7 @@ export default function PaidPayments() {
           <div>
             <h2 className="text-xl font-semibold text-foreground">Completed Payments</h2>
             <p className="text-sm text-muted-foreground">
-              {payments.length} payments · ${totalPaid.toLocaleString()} received
+              {payments.length} payments · ৳{totalPaid.toLocaleString()} collected
             </p>
           </div>
         </div>
@@ -82,12 +83,12 @@ export default function PaidPayments() {
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead>Payment ID</TableHead>
+              <TableHead>Transaction ID</TableHead>
               <TableHead>Vehicle</TableHead>
-              <TableHead>Buyer</TableHead>
               <TableHead>Seller</TableHead>
-              <TableHead>Amount</TableHead>
-              <TableHead>Method</TableHead>
+              <TableHead>Vehicle Price</TableHead>
+              <TableHead>Platform Fee</TableHead>
+              <TableHead>Payment Method</TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Status</TableHead>
             </TableRow>
@@ -118,19 +119,41 @@ export default function PaidPayments() {
                     className="animate-fade-in"
                     style={{ animationDelay: `${index * 50}ms` }}
                   >
-                    <TableCell className="font-mono text-sm">PAY{String(payment.id).padStart(5, '0')}</TableCell>
+                    <TableCell className="font-mono text-sm">
+                      {payment.transactionId || `PAY${String(payment.id).padStart(5, '0')}`}
+                    </TableCell>
                     <TableCell className="font-medium">
-                      {payment.vehicle?.title || `Vehicle #${payment.vehicleId}`}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {payment.buyer?.name || 'Unknown'}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">-</TableCell>
-                    <TableCell className="font-semibold">
-                      ${payment.amount.toLocaleString()}
+                      <div>
+                        <p>{payment.vehicle?.title || `Vehicle #${payment.vehicleId}`}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {payment.vehicle?.type?.toUpperCase()} · {payment.vehicle?.brand}
+                        </p>
+                      </div>
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline">Online</Badge>
+                      <div>
+                        <p>{payment.vehicle?.seller?.name || 'Unknown'}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {payment.vehicle?.seller?.email}
+                        </p>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      ৳{Number(payment.vehiclePrice || 0).toLocaleString()}
+                    </TableCell>
+                    <TableCell className="font-semibold">
+                      ৳{Number(payment.amount).toLocaleString()}
+                      <span className="text-xs text-muted-foreground ml-1">
+                        ({payment.feePercentage}%)
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="capitalize">
+                        {payment.paymentMethod || 'SSLCommerz'}
+                      </Badge>
+                      {payment.cardType && (
+                        <p className="text-xs text-muted-foreground mt-1">{payment.cardType}</p>
+                      )}
                     </TableCell>
                     <TableCell className="text-muted-foreground">{date}</TableCell>
                     <TableCell>

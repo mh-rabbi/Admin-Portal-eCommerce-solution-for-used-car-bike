@@ -52,7 +52,7 @@ export default function SoldVehicles() {
           <div>
             <h2 className="text-xl font-semibold text-foreground">Sold Vehicles</h2>
             <p className="text-sm text-muted-foreground">
-              {vehicles.length} vehicles sold · ${totalRevenue.toLocaleString()} total
+              {vehicles.length} vehicles sold · ৳{totalRevenue.toLocaleString()} total
             </p>
           </div>
         </div>

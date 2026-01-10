@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { DollarSign, Car, ShoppingBag, TrendingUp, Loader2 } from "lucide-react";
+import { Car, ShoppingBag, TrendingUp, Loader2, Wallet } from "lucide-react";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { RevenueChart } from "@/components/dashboard/RevenueChart";
 import { SalesChart } from "@/components/dashboard/SalesChart";
@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function Dashboard() {
   const [stats, setStats] = useState([
-    { title: "Total Revenue", value: "$0", icon: DollarSign, trend: { value: 0, isPositive: true } },
+    { title: "Platform Fee Revenue", value: "৳0", icon: Wallet, trend: { value: 0, isPositive: true } },
     { title: "Vehicles Sold", value: "0", icon: ShoppingBag, trend: { value: 0, isPositive: true } },
     { title: "Active Listings", value: "0", icon: Car, trend: { value: 0, isPositive: false } },
     { title: "Conversion Rate", value: "0%", icon: TrendingUp, trend: { value: 0, isPositive: true } },
@@ -31,11 +31,14 @@ export default function Dashboard() {
         ? ((analytics.soldVehicles / analytics.totalVehicles) * 100).toFixed(1)
         : 0;
 
+      // Platform fee revenue is the money collected from vehicle posts
+      const platformFeeRevenue = analytics.platformFeeCollected || analytics.totalRevenue || 0;
+
       setStats([
         {
-          title: "Total Revenue",
-          value: `$${analytics.totalRevenue.toLocaleString()}`,
-          icon: DollarSign,
+          title: "Platform Fee Revenue",
+          value: `৳${platformFeeRevenue.toLocaleString()}`,
+          icon: Wallet,
           trend: { value: 12.5, isPositive: true },
         },
         {

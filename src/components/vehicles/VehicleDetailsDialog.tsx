@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Calendar, DollarSign, User, Mail, Phone, FileText, Image as ImageIcon, X } from "lucide-react";
+import { Calendar, Wallet, User, Mail, Phone, FileText, Image as ImageIcon, X, CreditCard } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Vehicle } from "@/services/vehicles.service";
 import { vehiclesService } from "@/services/vehicles.service";
+import { paymentsService, Payment } from "@/services/payments.service";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 
@@ -31,6 +32,7 @@ const statusStyles = {
 
 export function VehicleDetailsDialog({ vehicleId, open, onOpenChange }: VehicleDetailsDialogProps) {
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
+  const [payment, setPayment] = useState<Payment | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -45,8 +47,12 @@ export function VehicleDetailsDialog({ vehicleId, open, onOpenChange }: VehicleD
 
     try {
       setIsLoading(true);
-      const data = await vehiclesService.getVehicle(vehicleId);
-      setVehicle(data);
+      const [vehicleData, paymentData] = await Promise.all([
+        vehiclesService.getVehicle(vehicleId),
+        paymentsService.getPaymentByVehicle(vehicleId),
+      ]);
+      setVehicle(vehicleData);
+      setPayment(paymentData);
     } catch (error: any) {
       toast({
         title: "Error",
@@ -56,6 +62,22 @@ export function VehicleDetailsDialog({ vehicleId, open, onOpenChange }: VehicleD
       onOpenChange(false);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const getPaymentStatusBadge = () => {
+    if (!payment) {
+      return <Badge variant="outline" className="bg-gray-500/10 text-gray-500">No Payment</Badge>;
+    }
+    switch (payment.status) {
+      case 'paid':
+        return <Badge variant="outline" className="bg-emerald-500/10 text-emerald-500">Paid</Badge>;
+      case 'pending':
+        return <Badge variant="outline" className="bg-amber-500/10 text-amber-500">Pending</Badge>;
+      case 'failed':
+        return <Badge variant="outline" className="bg-red-500/10 text-red-500">Failed</Badge>;
+      default:
+        return <Badge variant="outline">{payment.status}</Badge>;
     }
   };
 
@@ -80,6 +102,7 @@ export function VehicleDetailsDialog({ vehicleId, open, onOpenChange }: VehicleD
                 {vehicle.status.charAt(0).toUpperCase() + vehicle.status.slice(1)}
               </Badge>
             )}
+            {vehicle && getPaymentStatusBadge()}
           </DialogTitle>
         </DialogHeader>
 
@@ -90,6 +113,50 @@ export function VehicleDetailsDialog({ vehicleId, open, onOpenChange }: VehicleD
         ) : vehicle ? (
           <ScrollArea className="max-h-[70vh]">
             <div className="space-y-6">
+              {/* Payment Status Card */}
+              <div className="bg-muted/50 rounded-lg p-4">
+                <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
+                  <CreditCard className="h-5 w-5" />
+                  Payment Status
+                </h3>
+                {payment ? (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Status</label>
+                      <p className="mt-1">{getPaymentStatusBadge()}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Platform Fee</label>
+                      <p className="text-foreground font-semibold">৳{Number(payment.amount).toLocaleString()}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Fee Rate</label>
+                      <p className="text-foreground">{payment.feePercentage}%</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">Transaction ID</label>
+                      <p className="text-foreground font-mono text-sm">{payment.transactionId || 'N/A'}</p>
+                    </div>
+                    {payment.paymentMethod && (
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Payment Method</label>
+                        <p className="text-foreground capitalize">{payment.paymentMethod}</p>
+                      </div>
+                    )}
+                    {payment.cardType && (
+                      <div>
+                        <label className="text-sm font-medium text-muted-foreground">Card Type</label>
+                        <p className="text-foreground">{payment.cardType}</p>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-muted-foreground">No payment record found for this vehicle.</p>
+                )}
+              </div>
+
+              <Separator />
+
               {/* Vehicle Images */}
               {vehicle.images && vehicle.images.length > 0 && (
                 <div>
@@ -130,9 +197,9 @@ export function VehicleDetailsDialog({ vehicleId, open, onOpenChange }: VehicleD
                       <p className="text-foreground">{vehicle.type}</p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <DollarSign className="h-4 w-4 text-muted-foreground" />
+                      <Wallet className="h-4 w-4 text-muted-foreground" />
                       <span className="text-2xl font-bold text-primary">
-                        ${vehicle.price.toLocaleString()}
+                        ৳{vehicle.price.toLocaleString()}
                       </span>
                     </div>
                   </div>

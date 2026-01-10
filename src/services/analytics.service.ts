@@ -8,7 +8,13 @@ export interface Analytics {
   approvedVehicles: number;
   rejectedVehicles: number;
   totalRevenue: number;
+  platformFeeCollected: number;
   revenueByMonth?: Array<{ month: string; revenue: number }>;
+  payments?: {
+    paidCount: number;
+    pendingCount: number;
+    failedCount: number;
+  };
 }
 
 export interface BrandAnalytics {

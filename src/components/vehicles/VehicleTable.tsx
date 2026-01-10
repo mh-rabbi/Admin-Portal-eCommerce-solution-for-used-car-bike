@@ -122,7 +122,7 @@ export function VehicleTable({
                 </div>
               </TableCell>
               <TableCell className="font-medium">
-                ${vehicle.price.toLocaleString()}
+                ৳{vehicle.price.toLocaleString()}
               </TableCell>
               <TableCell className="text-muted-foreground">{vehicle.seller}</TableCell>
               <TableCell className="text-muted-foreground">{vehicle.date}</TableCell>

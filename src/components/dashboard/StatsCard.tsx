@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, ComponentType, SVGProps } from "react";
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
+
+// Allow both Lucide icons and custom SVG icon components
+type IconComponent = LucideIcon | ComponentType<SVGProps<SVGSVGElement> & { size?: number | string }>;
 
 interface StatsCardProps {
   title: string;
   value: string | number;
-  icon: LucideIcon;
+  icon: IconComponent;
   trend?: {
     value: number;
     isPositive: boolean;
@@ -59,8 +62,11 @@ export function StatsCard({
   }, [isVisible, value]);
 
   const formatValue = () => {
+    if (typeof value === "string" && value.includes("৳")) {
+      return `৳${displayValue.toLocaleString()}`;
+    }
     if (typeof value === "string" && value.includes("$")) {
-      return `$${displayValue.toLocaleString()}`;
+      return `৳${displayValue.toLocaleString()}`;
     }
     if (typeof value === "string" && value.includes("%")) {
       return `${displayValue}%`;

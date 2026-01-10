@@ -64,7 +64,7 @@ export function SalesChart() {
               }}
               labelStyle={{ color: "hsl(var(--foreground))", fontWeight: 600 }}
               formatter={(value: number, name: string) => [
-                name === "sales" ? `${value} vehicles` : `$${value.toLocaleString()}`,
+                name === "sales" ? `${value} vehicles` : `৳${value.toLocaleString()}`,
                 name === "sales" ? "Units Sold" : "Revenue",
               ]}
             />
