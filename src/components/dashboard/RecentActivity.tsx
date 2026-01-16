@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { CheckCircle, Clock, XCircle, DollarSign, Car, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { activityService } from "@/services/activity.service";
+import BdtIcon from "../icons/BdtIcon";
 
 interface Activity {
   id: string;
@@ -56,7 +57,7 @@ const getActivityIcon = (type: Activity["type"]) => {
     case "rejected":
       return XCircle;
     case "payment":
-      return DollarSign;
+      return BdtIcon;
     case "listing":
       return Car;
     case "pending":

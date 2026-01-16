@@ -24,6 +24,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { AiChatPanel } from "@/components/chat/AiChatPanel";
+import BdtIcon from "../icons/BdtIcon";
 
 interface NavItem {
   title: string;
@@ -46,7 +47,7 @@ const navItems: NavItem[] = [
   },
   {
     title: "Payments",
-    icon: DollarSign,
+    icon: BdtIcon,
     children: [
       { title: "Pending", href: "/payments/pending", icon: Clock },
       { title: "Paid", href: "/payments/paid", icon: Wallet },
