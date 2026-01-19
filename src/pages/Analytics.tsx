@@ -16,7 +16,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { TrendingUp, Wallet, ShoppingBag, Percent, Loader2 } from "lucide-react";
+import { TrendingUp, TrendingDown, Wallet, ShoppingBag, Percent, Loader2 } from "lucide-react";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { analyticsService } from "@/services/analytics.service";
 import { useToast } from "@/hooks/use-toast";
@@ -74,15 +74,18 @@ export default function Analytics() {
         },
         {
           title: "Growth Rate",
-          value: `${conversionRate}%`,
-          icon: TrendingUp,
-          trend: { value: 3.4, isPositive: true },
+          value: `${analytics.growthRate}%`,
+          icon: analytics.growthRate >= 0 ? TrendingUp : TrendingDown,
+          trend: {
+            value: Math.abs(analytics.growthRate),
+            isPositive: analytics.growthRate >= 0
+          },
         },
         {
           title: "Avg. Margin",
-          value: "10%",
+          value: `${analytics.avgMargin}%`,
           icon: Percent,
-          trend: { value: 1.2, isPositive: true },
+          trend: { value: 0, isPositive: true },
         },
       ]);
 

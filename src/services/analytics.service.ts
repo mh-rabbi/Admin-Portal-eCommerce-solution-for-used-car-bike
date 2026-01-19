@@ -9,6 +9,8 @@ export interface Analytics {
   rejectedVehicles: number;
   totalRevenue: number;
   platformFeeCollected: number;
+  growthRate: number;
+  avgMargin: number;
   revenueByMonth?: Array<{ month: string; revenue: number }>;
   payments?: {
     paidCount: number;
