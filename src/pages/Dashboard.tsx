@@ -15,6 +15,7 @@ export default function Dashboard() {
     { title: "Active Listings", value: "0", icon: Car, trend: { value: 0, isPositive: false } },
     { title: "Conversion Rate", value: "0%", icon: TrendingUp, trend: { value: 0, isPositive: true } },
   ]);
+  const [topSellers, setTopSellers] = useState<Array<{ name: string; sales: number; revenue: number }>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
@@ -26,7 +27,7 @@ export default function Dashboard() {
     try {
       setIsLoading(true);
       const analytics = await analyticsService.getAnalytics();
-      
+
       const conversionRate = analytics.totalVehicles > 0
         ? ((analytics.soldVehicles / analytics.totalVehicles) * 100).toFixed(1)
         : 0;
@@ -60,6 +61,10 @@ export default function Dashboard() {
           trend: { value: 5.4, isPositive: true },
         },
       ]);
+
+      if (analytics.topSellers) {
+        setTopSellers(analytics.topSellers);
+      }
     } catch (error: any) {
       toast({
         title: "Error",
@@ -98,7 +103,7 @@ export default function Dashboard() {
       {/* Charts Row */}
       <div className="grid gap-6 lg:grid-cols-2">
         <RevenueChart />
-        <SalesChart />
+        <SalesChart data={topSellers} />
       </div>
 
       {/* Bottom Row */}

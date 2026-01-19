@@ -11,6 +11,7 @@ export interface Analytics {
   platformFeeCollected: number;
   growthRate: number;
   avgMargin: number;
+  topSellers: Array<{ name: string; sales: number; revenue: number }>;
   revenueByMonth?: Array<{ month: string; revenue: number }>;
   payments?: {
     paidCount: number;

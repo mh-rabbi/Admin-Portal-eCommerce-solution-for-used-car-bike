@@ -33,7 +33,7 @@ function formatTimeAgo(date: Date): string {
 
 function vehicleToActivity(vehicle: Vehicle): Activity {
   const timestamp = new Date(vehicle.updatedAt || vehicle.createdAt);
-  
+
   switch (vehicle.status) {
     case 'approved':
       return {
@@ -86,11 +86,7 @@ function vehicleToActivity(vehicle: Vehicle): Activity {
 function paymentToActivity(payment: Payment): Activity {
   const timestamp = new Date(payment.updatedAt || payment.createdAt);
   const vehicleTitle = payment.vehicle?.title || `Vehicle #${payment.vehicleId}`;
-  const formattedAmount = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-  }).format(payment.amount);
+  const formattedAmount = `৳${payment.amount.toLocaleString()}`;
 
   if (payment.status === 'paid') {
     return {
