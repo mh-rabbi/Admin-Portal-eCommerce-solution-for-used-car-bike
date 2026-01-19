@@ -133,40 +133,50 @@ export function VehicleTable({
               </TableCell>
               {showActions && (
                 <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem
-                        className="gap-2"
-                        onClick={() => {
-                          const numericId = parseInt(vehicle.id.replace('VH', ''));
-                          onViewDetails?.(numericId);
-                        }}
-                      >
-                        <Eye className="h-4 w-4" /> View Details
-                      </DropdownMenuItem>
-                      {vehicle.status === "pending" && (
-                        <>
-                          <DropdownMenuItem
-                            className="gap-2 text-emerald-500"
-                            onClick={() => handleApprove(vehicle.id)}
-                          >
-                            <CheckCircle className="h-4 w-4" /> Approve
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="gap-2 text-destructive"
-                            onClick={() => handleReject(vehicle.id)}
-                          >
-                            <XCircle className="h-4 w-4" /> Reject
-                          </DropdownMenuItem>
-                        </>
-                      )}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  {vehicle.status === "pending" ? (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          className="gap-2"
+                          onClick={() => {
+                            const numericId = parseInt(vehicle.id.replace('VH', ''));
+                            onViewDetails?.(numericId);
+                          }}
+                        >
+                          <Eye className="h-4 w-4" /> View Details
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="gap-2 text-emerald-500"
+                          onClick={() => handleApprove(vehicle.id)}
+                        >
+                          <CheckCircle className="h-4 w-4" /> Approve
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="gap-2 text-destructive"
+                          onClick={() => handleReject(vehicle.id)}
+                        >
+                          <XCircle className="h-4 w-4" /> Reject
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                      onClick={() => {
+                        const numericId = parseInt(vehicle.id.replace('VH', ''));
+                        onViewDetails?.(numericId);
+                      }}
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                  )}
                 </TableCell>
               )}
             </TableRow>

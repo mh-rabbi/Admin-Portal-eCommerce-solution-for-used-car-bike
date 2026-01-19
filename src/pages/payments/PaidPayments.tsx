@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Wallet, Search, Download, Loader2 } from "lucide-react";
+import { Wallet, Search, Download, Loader2, Eye } from "lucide-react";
 import { paymentsService, Payment } from "@/services/payments.service";
+import { VehicleDetailsDialog } from "@/components/vehicles/VehicleDetailsDialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +19,8 @@ export default function PaidPayments() {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedVehicleId, setSelectedVehicleId] = useState<number | null>(null);
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -49,6 +52,12 @@ export default function PaidPayments() {
   );
 
   const totalPaid = payments.reduce((sum, p) => sum + Number(p.amount), 0);
+
+  const handleViewDetails = (vehicleId: number) => {
+    setSelectedVehicleId(vehicleId);
+    setIsDetailsDialogOpen(true);
+  };
+
 
   return (
     <div className="space-y-6">
@@ -91,6 +100,7 @@ export default function PaidPayments() {
               <TableHead>Payment Method</TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -161,6 +171,17 @@ export default function PaidPayments() {
                         Paid
                       </Badge>
                     </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                        onClick={() => payment.vehicle?.id && handleViewDetails(payment.vehicle.id)}
+                        disabled={!payment.vehicle?.id}
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 );
               })
@@ -168,6 +189,12 @@ export default function PaidPayments() {
           </TableBody>
         </Table>
       </div>
+
+      <VehicleDetailsDialog
+        vehicleId={selectedVehicleId}
+        open={isDetailsDialogOpen}
+        onOpenChange={setIsDetailsDialogOpen}
+      />
     </div>
   );
 }

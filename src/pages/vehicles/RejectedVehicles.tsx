@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { XCircle, Filter, Search, Loader2 } from "lucide-react";
 import { VehicleTable } from "@/components/vehicles/VehicleTable";
+import { VehicleDetailsDialog } from "@/components/vehicles/VehicleDetailsDialog";
 import { vehiclesService } from "@/services/vehicles.service";
 import { transformVehicles } from "@/utils/vehicle.utils";
 import { Input } from "@/components/ui/input";
@@ -11,6 +12,8 @@ export default function RejectedVehicles() {
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedVehicleId, setSelectedVehicleId] = useState<number | null>(null);
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -39,6 +42,11 @@ export default function RejectedVehicles() {
       v.model.toLowerCase().includes(search.toLowerCase()) ||
       v.seller.toLowerCase().includes(search.toLowerCase())
   );
+
+  const handleViewDetails = (vehicleId: number) => {
+    setSelectedVehicleId(vehicleId);
+    setIsDetailsDialogOpen(true);
+  };
 
   return (
     <div className="space-y-6">
@@ -76,8 +84,18 @@ export default function RejectedVehicles() {
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       ) : (
-        <VehicleTable vehicles={filteredVehicles} />
+        <VehicleTable
+          vehicles={filteredVehicles}
+          showActions
+          onViewDetails={handleViewDetails}
+        />
       )}
+
+      <VehicleDetailsDialog
+        vehicleId={selectedVehicleId}
+        open={isDetailsDialogOpen}
+        onOpenChange={setIsDetailsDialogOpen}
+      />
     </div>
   );
 }
