@@ -18,6 +18,7 @@ import {
 } from "recharts";
 import { TrendingUp, TrendingDown, Wallet, ShoppingBag, Percent, Loader2 } from "lucide-react";
 import { StatsCard } from "@/components/dashboard/StatsCard";
+import { RevenueChart } from "@/components/dashboard/RevenueChart";
 import { analyticsService } from "@/services/analytics.service";
 import { useToast } from "@/hooks/use-toast";
 
@@ -39,6 +40,10 @@ export default function Analytics() {
   ]);
   const [brandShare, setBrandShare] = useState<Array<{ name: string; value: number; color: string }>>([]);
   const [typeData, setTypeData] = useState<Array<{ name: string; count: number }>>([]);
+  const [revenueData, setRevenueData] = useState<{
+    monthly: Array<{ name: string; revenue: number; sales: number }>;
+    weekly: Array<{ name: string; revenue: number; sales: number }>;
+  }>({ monthly: [], weekly: [] });
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
@@ -102,6 +107,10 @@ export default function Analytics() {
 
       // Transform type data
       setTypeData(types.map(t => ({ name: t.type, count: t.count })));
+
+      if (analytics.revenueChartData) {
+        setRevenueData(analytics.revenueChartData);
+      }
     } catch (error: any) {
       toast({
         title: "Error",
@@ -136,16 +145,8 @@ export default function Analytics() {
         ))}
       </div>
 
-      {/* Revenue Chart - Simplified for now */}
-      <div className="rounded-xl border border-border bg-card p-6 animate-fade-in-up">
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold text-foreground">Revenue Overview</h3>
-          <p className="text-sm text-muted-foreground">Total revenue from vehicle sales</p>
-        </div>
-        <div className="h-[350px] flex items-center justify-center text-muted-foreground">
-          Revenue chart data will be available as more sales are recorded
-        </div>
-      </div>
+      {/* Revenue Chart */}
+      <RevenueChart data={revenueData} />
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Sales by Type */}

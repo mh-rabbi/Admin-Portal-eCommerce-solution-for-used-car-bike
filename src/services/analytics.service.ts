@@ -18,6 +18,10 @@ export interface Analytics {
     pendingCount: number;
     failedCount: number;
   };
+  revenueChartData: {
+    monthly: Array<{ name: string; revenue: number; sales: number }>;
+    weekly: Array<{ name: string; revenue: number; sales: number }>;
+  };
 }
 
 export interface BrandAnalytics {

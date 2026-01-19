@@ -10,36 +10,23 @@ import {
 } from "recharts";
 import { cn } from "@/lib/utils";
 
-const monthlyData = [
-  { name: "Jan", revenue: 45000, sales: 32 },
-  { name: "Feb", revenue: 52000, sales: 38 },
-  { name: "Mar", revenue: 48000, sales: 35 },
-  { name: "Apr", revenue: 61000, sales: 45 },
-  { name: "May", revenue: 55000, sales: 40 },
-  { name: "Jun", revenue: 67000, sales: 49 },
-  { name: "Jul", revenue: 72000, sales: 52 },
-  { name: "Aug", revenue: 69000, sales: 50 },
-  { name: "Sep", revenue: 78000, sales: 56 },
-  { name: "Oct", revenue: 82000, sales: 59 },
-  { name: "Nov", revenue: 91000, sales: 65 },
-  { name: "Dec", revenue: 98000, sales: 71 },
-];
-
-const weeklyData = [
-  { name: "Mon", revenue: 12000, sales: 8 },
-  { name: "Tue", revenue: 15000, sales: 11 },
-  { name: "Wed", revenue: 18000, sales: 13 },
-  { name: "Thu", revenue: 14000, sales: 10 },
-  { name: "Fri", revenue: 22000, sales: 16 },
-  { name: "Sat", revenue: 25000, sales: 18 },
-  { name: "Sun", revenue: 19000, sales: 14 },
-];
+interface RevenueChartProps {
+  data?: {
+    monthly: Array<{ name: string; revenue: number; sales: number }>;
+    weekly: Array<{ name: string; revenue: number; sales: number }>;
+  };
+}
 
 type TimeRange = "week" | "month";
 
-export function RevenueChart() {
+export function RevenueChart({ data: chartData }: RevenueChartProps) {
   const [timeRange, setTimeRange] = useState<TimeRange>("month");
-  const data = timeRange === "month" ? monthlyData : weeklyData;
+
+  // Default empty data if not provided
+  const defaultData = { monthly: [], weekly: [] };
+  const sourceData = chartData || defaultData;
+
+  const data = timeRange === "month" ? sourceData.monthly : sourceData.weekly;
 
   return (
     <div className="rounded-xl border border-border bg-card p-6 animate-fade-in-up">

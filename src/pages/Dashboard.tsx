@@ -16,6 +16,10 @@ export default function Dashboard() {
     { title: "Conversion Rate", value: "0%", icon: TrendingUp, trend: { value: 0, isPositive: true } },
   ]);
   const [topSellers, setTopSellers] = useState<Array<{ name: string; sales: number; revenue: number }>>([]);
+  const [revenueData, setRevenueData] = useState<{
+    monthly: Array<{ name: string; revenue: number; sales: number }>;
+    weekly: Array<{ name: string; revenue: number; sales: number }>;
+  }>({ monthly: [], weekly: [] });
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
@@ -65,6 +69,10 @@ export default function Dashboard() {
       if (analytics.topSellers) {
         setTopSellers(analytics.topSellers);
       }
+
+      if (analytics.revenueChartData) {
+        setRevenueData(analytics.revenueChartData);
+      }
     } catch (error: any) {
       toast({
         title: "Error",
@@ -102,7 +110,7 @@ export default function Dashboard() {
 
       {/* Charts Row */}
       <div className="grid gap-6 lg:grid-cols-2">
-        <RevenueChart />
+        <RevenueChart data={revenueData} />
         <SalesChart data={topSellers} />
       </div>
 
