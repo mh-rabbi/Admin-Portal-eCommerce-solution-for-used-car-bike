@@ -35,11 +35,14 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 export interface UserDisplay {
   id: string;
   name: string;
   email: string;
   role: "user" | "admin";
+  profileImage?: string;
   createdAt: string;
   formattedDate: string;
 }
@@ -112,8 +115,21 @@ export function UserTable({
                 >
                   <TableCell>
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                        <UserIcon className="h-5 w-5" />
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary overflow-hidden">
+                        {user.profileImage ? (
+                          <img
+                            src={user.profileImage.startsWith('http')
+                              ? user.profileImage
+                              : `${API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL}${user.profileImage.startsWith('/') ? user.profileImage : `/${user.profileImage}`}`}
+                            alt={user.name}
+                            className="h-full w-full object-cover"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.name) + '&background=random';
+                            }}
+                          />
+                        ) : (
+                          <UserIcon className="h-5 w-5" />
+                        )}
                       </div>
                       <div>
                         <p className="font-medium text-foreground">{user.name}</p>

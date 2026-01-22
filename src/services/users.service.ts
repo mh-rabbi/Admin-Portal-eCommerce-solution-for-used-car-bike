@@ -5,7 +5,13 @@ export interface User {
   name: string;
   email: string;
   role: 'user' | 'admin';
+  profileImage?: string;
+  phone?: string;
+  address?: string;
+  streetNo?: string;
+  postalCode?: string;
   createdAt: string;
+  updatedAt: string;
 }
 
 class UsersService {

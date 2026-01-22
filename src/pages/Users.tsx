@@ -13,6 +13,7 @@ function transformUsers(users: User[]): UserDisplay[] {
     name: user.name,
     email: user.email,
     role: user.role,
+    profileImage: user.profileImage,
     createdAt: user.createdAt,
     formattedDate: new Date(user.createdAt).toLocaleDateString('en-US', {
       year: 'numeric',
