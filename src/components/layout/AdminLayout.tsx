@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { Link, useLocation, Outlet } from "react-router-dom";
+import { Link, useLocation, Outlet, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Car,
   Clock,
   CheckCircle,
   XCircle,
-  DollarSign,
   BarChart3,
   MessageSquare,
   LogOut,
@@ -25,6 +24,7 @@ import {
 } from "@/components/ui/collapsible";
 import { AiChatPanel } from "@/components/chat/AiChatPanel";
 import BdtIcon from "../icons/BdtIcon";
+import { authService } from "@/services/auth.service";
 
 interface NavItem {
   title: string;
@@ -61,6 +61,7 @@ export function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [chatOpen, setChatOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isActive = (href: string) => location.pathname === href;
   const isParentActive = (children?: { href: string }[]) =>
@@ -162,9 +163,8 @@ export function AdminLayout() {
         <div className="absolute bottom-0 left-0 right-0 border-t border-border p-2">
           <button
             onClick={() => {
-              const { authService } = require('@/services/auth.service');
               authService.logout();
-              window.location.href = '/login';
+              navigate("/login");
             }}
             className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-all duration-200 hover:bg-destructive/10 hover:text-destructive"
           >

@@ -11,7 +11,6 @@ import PendingVehicles from "@/pages/vehicles/PendingVehicles";
 import ApprovedVehicles from "@/pages/vehicles/ApprovedVehicles";
 import RejectedVehicles from "@/pages/vehicles/RejectedVehicles";
 import SoldVehicles from "@/pages/vehicles/SoldVehicles";
-import PendingPayments from "@/pages/payments/PendingPayments";
 import PaidPayments from "@/pages/payments/PaidPayments";
 import Analytics from "@/pages/Analytics";
 import Users from "@/pages/Users";
@@ -40,7 +39,6 @@ const App = () => (
             <Route path="/vehicles/approved" element={<ApprovedVehicles />} />
             <Route path="/vehicles/rejected" element={<RejectedVehicles />} />
             <Route path="/vehicles/sold" element={<SoldVehicles />} />
-            <Route path="/payments/pending" element={<PendingPayments />} />
             <Route path="/payments/paid" element={<PaidPayments />} />
             <Route path="/users" element={<Users />} />
             <Route path="/analytics" element={<Analytics />} />
