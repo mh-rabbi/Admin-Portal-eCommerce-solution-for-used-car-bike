@@ -49,7 +49,7 @@ const navItems: NavItem[] = [
     title: "Payments",
     icon: BdtIcon,
     children: [
-      { title: "Pending", href: "/payments/pending", icon: Clock },
+      //{ title: "Pending", href: "/payments/pending", icon: Clock },
       { title: "Paid", href: "/payments/paid", icon: Wallet },
     ],
   },

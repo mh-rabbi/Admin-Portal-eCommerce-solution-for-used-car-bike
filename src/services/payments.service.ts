@@ -37,9 +37,6 @@ export interface PaymentStats {
 }
 
 class PaymentsService {
-  async getPendingPayments(): Promise<Payment[]> {
-    return apiService.get<Payment[]>('/payments/pending');
-  }
 
   async getPaidPayments(): Promise<Payment[]> {
     return apiService.get<Payment[]>('/payments/paid');
@@ -53,9 +50,7 @@ class PaymentsService {
     return apiService.get<PaymentStats>('/payments/stats');
   }
 
-  async confirmPayment(id: number): Promise<Payment> {
-    return apiService.post<Payment>(`/payments/${id}/confirm`);
-  }
+
 
   async getPaymentByVehicle(vehicleId: number): Promise<Payment | null> {
     try {

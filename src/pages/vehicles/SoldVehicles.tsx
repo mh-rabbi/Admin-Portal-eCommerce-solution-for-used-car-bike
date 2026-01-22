@@ -48,7 +48,7 @@ export default function SoldVehicles() {
     setIsDetailsDialogOpen(true);
   };
 
-  const totalRevenue = vehicles.reduce((sum, v) => sum + v.price, 0);
+  // const totalRevenue = vehicles.reduce((sum, v) => sum + v.price, 0);
 
   return (
     <div className="space-y-6">
@@ -60,7 +60,7 @@ export default function SoldVehicles() {
           <div>
             <h2 className="text-xl font-semibold text-foreground">Sold Vehicles</h2>
             <p className="text-sm text-muted-foreground">
-              {vehicles.length} vehicles sold · ৳{totalRevenue.toLocaleString()} total
+              {vehicles.length} vehicles sold 
             </p>
           </div>
         </div>
