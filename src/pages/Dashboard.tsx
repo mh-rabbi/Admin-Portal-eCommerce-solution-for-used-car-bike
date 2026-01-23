@@ -16,12 +16,22 @@ export default function Dashboard() {
     { title: "Conversion Rate", value: "0%", icon: TrendingUp, trend: { value: 0, isPositive: true } },
   ]);
   const [topSellers, setTopSellers] = useState<Array<{ name: string; sales: number; revenue: number }>>([]);
+  const [brandData, setBrandData] = useState<Array<{ name: string; value: number; color: string }>>([]);
   const [revenueData, setRevenueData] = useState<{
     monthly: Array<{ name: string; revenue: number; sales: number }>;
     weekly: Array<{ name: string; revenue: number; sales: number }>;
   }>({ monthly: [], weekly: [] });
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+
+  const chartColors = [
+    "hsl(var(--chart-1))",
+    "hsl(var(--chart-2))",
+    "hsl(var(--chart-3))",
+    "hsl(var(--chart-4))",
+    "hsl(var(--chart-5))",
+    "hsl(var(--muted))",
+  ];
 
   useEffect(() => {
     loadDashboardData();
@@ -30,7 +40,10 @@ export default function Dashboard() {
   const loadDashboardData = async () => {
     try {
       setIsLoading(true);
-      const analytics = await analyticsService.getAnalytics();
+      const [analytics, brands] = await Promise.all([
+        analyticsService.getAnalytics(),
+        analyticsService.getBrandAnalytics(),
+      ]);
 
       const conversionRate = analytics.totalVehicles > 0
         ? ((analytics.soldVehicles / analytics.totalVehicles) * 100).toFixed(1)
@@ -69,6 +82,17 @@ export default function Dashboard() {
       if (analytics.topSellers) {
         setTopSellers(analytics.topSellers);
       }
+
+      // Transform brand data for pie chart
+      const totalBrands = brands.reduce((sum, b) => sum + b.count, 0);
+      const brandChartData = brands
+        .map((brand, index) => ({
+          name: brand.brand,
+          value: totalBrands > 0 ? Math.round((brand.count / totalBrands) * 100) : 0,
+          color: chartColors[index % chartColors.length],
+        }))
+        .slice(0, 6);
+      setBrandData(brandChartData);
 
       if (analytics.revenueChartData) {
         setRevenueData(analytics.revenueChartData);
@@ -116,7 +140,7 @@ export default function Dashboard() {
 
       {/* Bottom Row */}
       <div className="grid gap-6 lg:grid-cols-2">
-        <BrandChart />
+        <BrandChart data={brandData} />
         <RecentActivity />
       </div>
     </div>
