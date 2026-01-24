@@ -64,9 +64,9 @@ export default function SoldVehicles() {
             </p>
           </div>
         </div>
-        <Button variant="outline" className="gap-2">
+        {/* <Button variant="outline" className="gap-2">
           <Download className="h-4 w-4" /> Export
-        </Button>
+        </Button> */}
       </div>
 
       <div className="flex items-center gap-4">
@@ -79,9 +79,9 @@ export default function SoldVehicles() {
             className="pl-9"
           />
         </div>
-        <Button variant="outline" className="gap-2">
+        {/* <Button variant="outline" className="gap-2">
           <Filter className="h-4 w-4" /> Filter
-        </Button>
+        </Button> */}
       </div>
 
       {isLoading ? (

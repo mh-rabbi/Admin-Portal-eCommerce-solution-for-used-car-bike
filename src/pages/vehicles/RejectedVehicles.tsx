@@ -74,9 +74,9 @@ export default function RejectedVehicles() {
             className="pl-9"
           />
         </div>
-        <Button variant="outline" className="gap-2">
+        {/* <Button variant="outline" className="gap-2">
           <Filter className="h-4 w-4" /> Filter
-        </Button>
+        </Button> */}
       </div>
 
       {isLoading ? (

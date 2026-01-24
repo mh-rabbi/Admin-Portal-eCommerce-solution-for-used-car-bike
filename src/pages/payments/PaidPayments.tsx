@@ -73,9 +73,9 @@ export default function PaidPayments() {
             </p>
           </div>
         </div>
-        <Button variant="outline" className="gap-2">
+        {/* <Button variant="outline" className="gap-2">
           <Download className="h-4 w-4" /> Export
-        </Button>
+        </Button> */}
       </div>
 
       <div className="relative max-w-sm">
