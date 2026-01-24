@@ -57,25 +57,37 @@ export default function Dashboard() {
           title: "Platform Fee Revenue",
           value: `৳${platformFeeRevenue.toLocaleString()}`,
           icon: Wallet,
-          trend: { value: 12.5, isPositive: true },
+          trend: {
+            value: Math.abs(analytics.revenueGrowth),
+            isPositive: analytics.revenueGrowth >= 0
+          },
         },
         {
           title: "Vehicles Sold",
           value: analytics.soldVehicles.toString(),
           icon: ShoppingBag,
-          trend: { value: 8.2, isPositive: true },
+          trend: {
+            value: Math.abs(analytics.vehiclesSoldGrowth),
+            isPositive: analytics.vehiclesSoldGrowth >= 0
+          },
         },
         {
           title: "Active Listings",
           value: analytics.approvedVehicles.toString(),
           icon: Car,
-          trend: { value: 3.1, isPositive: false },
+          trend: {
+            value: Math.abs(analytics.activeListingsGrowth),
+            isPositive: analytics.activeListingsGrowth >= 0
+          },
         },
         {
           title: "Conversion Rate",
           value: `${conversionRate}%`,
           icon: TrendingUp,
-          trend: { value: 5.4, isPositive: true },
+          trend: {
+            value: Math.abs(analytics.conversionRateGrowth),
+            isPositive: analytics.conversionRateGrowth >= 0
+          },
         },
       ]);
 

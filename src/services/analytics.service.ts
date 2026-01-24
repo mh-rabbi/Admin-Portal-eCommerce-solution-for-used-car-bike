@@ -9,7 +9,10 @@ export interface Analytics {
   rejectedVehicles: number;
   totalRevenue: number;
   platformFeeCollected: number;
-  growthRate: number;
+  revenueGrowth: number;
+  vehiclesSoldGrowth: number;
+  activeListingsGrowth: number;
+  conversionRateGrowth: number;
   avgMargin: number;
   topSellers: Array<{ name: string; sales: number; revenue: number }>;
   revenueByMonth?: Array<{ month: string; revenue: number }>;

@@ -69,21 +69,27 @@ export default function Analytics() {
           title: "Total Revenue",
           value: `৳${analytics.totalRevenue.toLocaleString()}`,
           icon: Wallet,
-          trend: { value: 15.2, isPositive: true },
+          trend: {
+            value: Math.abs(analytics.revenueGrowth),
+            isPositive: analytics.revenueGrowth >= 0
+          },
         },
         {
           title: "Total Sales",
           value: analytics.soldVehicles.toString(),
           icon: ShoppingBag,
-          trend: { value: 12.8, isPositive: true },
+          trend: {
+            value: Math.abs(analytics.vehiclesSoldGrowth),
+            isPositive: analytics.vehiclesSoldGrowth >= 0
+          },
         },
         {
           title: "Growth Rate",
-          value: `${analytics.growthRate}%`,
-          icon: analytics.growthRate >= 0 ? TrendingUp : TrendingDown,
+          value: `${analytics.revenueGrowth}%`,
+          icon: analytics.revenueGrowth >= 0 ? TrendingUp : TrendingDown,
           trend: {
-            value: Math.abs(analytics.growthRate),
-            isPositive: analytics.growthRate >= 0
+            value: Math.abs(analytics.revenueGrowth),
+            isPositive: analytics.revenueGrowth >= 0
           },
         },
         {
